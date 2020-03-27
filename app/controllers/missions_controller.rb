@@ -36,10 +36,7 @@ class MissionsController < ApplicationController
   def complete
     @mission.update(mission_update_params)
 
-    #update status mission
     @mission.status = "completed"
-
-    # calculates the points for new mission
 
     progress = (@mission.place.volume - @mission.volume_left)
     if progress < 0
@@ -50,11 +47,9 @@ class MissionsController < ApplicationController
 
     @mission.save!
 
-    # update total user points after mission
     current_user.points += @mission.mission_points
     current_user.save
 
-    # update place volume with new volume left on site estimated by volonteer
     @mission.place.volume = @mission.volume_left
     @mission.place.save
 
