@@ -6,8 +6,6 @@ class PlacesController < ApplicationController
     if params[:search].present?
       coordinates = Geocoder.coordinates(params[:search], lookup: :nominatim)
       @places = Place.near(coordinates).geocoded.not_clean_yet.order("created_at DESC")
-
-      # @places = Place.near(params[:search], lookup: :nominatim).geocoded.not_clean_yet.order("created_at DESC")
     else
       @places = Place.geocoded.not_clean_yet.order("created_at DESC")
     end
@@ -40,12 +38,12 @@ class PlacesController < ApplicationController
     @place.mapmaster.points += 10
     @place.mapmaster.save
 
-    # COOKIE STUFF
+
     @place.longitude = cookies[:longitude]
     @place.latitude = cookies[:latitude]
 
-    #testing
-    puts "#{@place.longitude} #{@place.latitude}"
+
+    "#{@place.longitude} #{@place.latitude}"
 
     if @place.save
       redirect_to congrats_on_alerting_place_path(@place)
@@ -55,8 +53,8 @@ class PlacesController < ApplicationController
   end
 
   def geolocate_user
-    p cookies[:latitude]
-    p cookies[:longitude]
+    cookies[:latitude]
+    cookies[:longitude]
     @markers = [{lat: cookies[:latitude], lng: cookies[:longitude]}]
   end
 
